@@ -1,2 +1,5 @@
 .streamlit/secrets.toml
 .venv/*
+philoui.egg-info/**
+philoui/__pycache__/**
+**/.DS_Store
