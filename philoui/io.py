@@ -102,16 +102,19 @@ def create_globe(key, kwargs = {'database': 'gathering', 'table': 'gathering'}):
     
     # Generate JavaScript code with city data
     javascript_code = f"""
-    // Gen city data
-    const VELOCITY = 9; // minutes per frame
+    import * as THREE from '//unpkg.com/three/build/three.module.js';
+
+    const VELOCITY = 2; // minutes per frame
 
     const sunPosAt = dt => {{
         const day = new Date(+dt).setUTCHours(0, 0, 0, 0);
         const t = solar.century(dt);
         const longitude = (day - dt) / 864e5 * 360 - 180;
         return [longitude - solar.equationOfTime(t) / 4, solar.declination(t)];
-    }};
+        }};
 
+    console.log(sunPosAt(+new Date()));
+    
     let dt = +new Date();
     const solarTile = {{ pos: sunPosAt(dt) }};
     const timeEl = document.getElementById('time');
@@ -163,7 +166,7 @@ def create_globe(key, kwargs = {'database': 'gathering', 'table': 'gathering'}):
     <body>
     <div id="globeViz"></div>
     <div id="time"></div>
-    <script>
+    <script type="module">
         { javascript_code }
     </script>
     </body>
