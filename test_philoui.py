@@ -36,7 +36,7 @@ def main():
     st.subheader("Dichotomy Widget")
 
     create_dichotomy(key = 'trust', kwargs={'survey': survey, 
-                                            'name': 'investor', 
+                                            'name': 'fellow', 
                                            'label': 'Trust Level', 
                                            'question': 'How much do you trust the Trustee?', 
                                            'rotationAngle': 0, 

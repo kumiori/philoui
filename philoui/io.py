@@ -13,6 +13,7 @@ def create_button(key, kwargs = {}):
     return st.button(label=key)
 
 def create_dichotomy(key, kwargs = {}):
+    st.divider()
     survey = kwargs.get('survey')
     label = kwargs.get('label', 'Confidence')
     name = kwargs.get('name', 'there')
@@ -21,29 +22,24 @@ def create_dichotomy(key, kwargs = {}):
     inverse_choice = kwargs.get('inverse_choice', lambda x: x)
     _response = kwargs.get('response', '## You can always change your mind.')
     col1, col2, col3 = st.columns([3, .1, 1])
-    with col1:    
-        response = survey.dichotomy(name=name, 
-                                label=label,
-                                question=question,
-                                gradientWidth = kwargs.get('gradientWidth', 30), 
-                                key=key)
-    with col3:
-        if response:
-            st.markdown('\n')            
-            st.markdown(f'## Your choice:', unsafe_allow_html=True)
-            st.markdown(f'## {inverse_choice(float(response))}')
-            st.markdown(f'{float(response)}', unsafe_allow_html=True)
-            if float(response) < 0.1:
-                st.success(messages[0])
-            if float(response) > 0.9:
-                st.info(messages[1])
-            elif 0.1 < float(response) < 0.9:
-                st.success(messages[2])
-        else:
-            st.markdown(f'#### Take your time:', unsafe_allow_html=True)
+    response = survey.dichotomy(name=name, 
+                            label=label,
+                            question=question,
+                            gradientWidth = kwargs.get('gradientWidth', 30), 
+                            key=key)
     if response:
+        st.markdown('\n')            
+        st.markdown(f'## Your choice: {inverse_choice(float(response))} or {float(response)}', unsafe_allow_html=True)
+        if float(response) < 0.1:
+            st.success(messages[0])
+        if float(response) > 0.9:
+            st.info(messages[1])
+        elif 0.1 < float(response) < 0.9:
+            st.success(messages[2])
+    else:
+        st.markdown(f'#### Take your time:', unsafe_allow_html=True)
         st.markdown(_response)
-    
+    st.divider()
     return response
 
 def create_dichotomy_with3cols(key, kwargs = {}):
