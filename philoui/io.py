@@ -1,4 +1,5 @@
 import streamlit as st
+import json
 from st_supabase_connection import SupabaseConnection
 import streamlit_survey as ss
 from streamlit_extras.row import row
@@ -39,7 +40,7 @@ def create_dichotomy(key, kwargs = {}):
             elif 0.1 < float(response) < 0.9:
                 st.success(messages[2])
         else:
-            st.markdown(f'## Take your time:', unsafe_allow_html=True)
+            st.markdown(f'#### Take your time:', unsafe_allow_html=True)
     if response:
         st.markdown(_response)
     
@@ -50,11 +51,24 @@ def create_dichotomy_with3cols(key, kwargs = {}):
 
 def create_qualitative(key, kwargs = {}):
     survey = kwargs.get('survey')
-    return survey.qualitative_parametric(name="Spirit",
+    _response = survey.qualitative_parametric(name="Spirit",
             question = "Support, Donate, or Invest?",
             label="Qualitative",
             areas = 3,
             key = "parametric")
+    st.write('You picked', _response)
+    return _response   
+
+def create_quantitative(key, kwargs = {}):
+    survey = kwargs.get('survey')
+    _response = survey.quantitative(name="Spirit",
+            question = "How tricky is Quantity?",
+            label="Quantitative",
+            data_values = [1, 10, 100, 0.1],
+            key = "quantitative")
+    st.write('You picked', _response)
+    return _response
+    
 
 def create_yesno(key, kwargs = {}):
     survey = kwargs
@@ -99,6 +113,7 @@ def create_globe(key, kwargs = {'database': 'gathering', 'table': 'gathering'}):
     
     # with stream:
         # st.write('.........')
+        # .backgroundColor('rgb(14, 17, 23)')
     
     # Generate JavaScript code with city data
     javascript_code = f"""
@@ -125,7 +140,7 @@ def create_globe(key, kwargs = {'database': 'gathering', 'table': 'gathering'}):
     const world = Globe()
         (document.getElementById('globeViz'))
         .globeImageUrl('//unpkg.com/three-globe/example/img/earth-dark.jpg')
-        .backgroundColor('rgb(14, 17, 23)')
+        .backgroundColor('white')
         .tilesData([solarTile])
         .tileLng(d => d.pos[0])
         .tileLat(d => d.pos[1])
@@ -261,8 +276,6 @@ def fetch_and_display_data(conn, kwargs):
         st.write(f"No data found in the {table_name} table.")
     return _data
 
-import streamlit as st
-import json
 
 class QuestionnaireDatabase:
     def __init__(self, conn, table_name="questionnaire"):

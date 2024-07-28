@@ -1,12 +1,12 @@
 import streamlit as st
 import streamlit_authenticator as stauth
 from streamlit_authenticator import Authenticate
-from lib.io import conn as supabase
+from philoui.io import conn as supabase
 from datetime import datetime, timedelta
 import hashlib
 from streamlit_authenticator.exceptions import CredentialsError, ForgotError, RegisterError, ResetError, UpdateError
 
-from lib.geo import get_coordinates
+from philoui.geo import get_coordinates
 import random
 import json
 

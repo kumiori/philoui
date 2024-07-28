@@ -3,3 +3,4 @@
 philoui.egg-info/**
 philoui/__pycache__/**
 **/.DS_Store
+philoui/philoui_selectors/**

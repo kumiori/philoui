@@ -6,19 +6,18 @@ import os
 from streamlit_extras.mandatory_date_range import date_range_picker 
 import datetime
 
-
 if st.secrets["runtime"]["STATUS"] == "Production":
     st.write(os.path.basename(__file__))
     root_dir = os.path.dirname(__file__)
 
     # Print the root directory
     st.write("Root directory:", root_dir)
-    build_dir = os.path.join(os.path.split(root_dir)[0], "qualitative_selector/frontend/build")
+    build_dir = os.path.join(os.path.split(root_dir)[0], "philoui/philoui_selectors/frontend/build")
     st.write("Build directory:", build_dir)
-    _qualitative_selector = components.declare_component("qualitiative", path=build_dir)
+    _qualitative_selector = components.declare_component("qualitative", path=build_dir)
 else:
     _qualitative_selector = components.declare_component(
-        "qualitative",
+        "philoui_selectors",
         url='http://localhost:3001'
     )
 
@@ -42,6 +41,14 @@ def _qualitative(name, question, label, areas, key=None):
     key=key,
     areas = areas,
     data_values  = [1, 2, 10],
+    question = question)
+
+def _quantitative(name, question, label, data_values, key=None):
+    return _qualitative_selector(component = "qualitative",
+    name = name,
+    label = label,
+    key=key,
+    data_values  = data_values,
     question = question)
 
 def _date_range_picker(name,
@@ -79,6 +86,7 @@ def date_decoder(date_obj):
 Dichotomy = ss.SurveyComponent.from_st_input(_dichotomy)
 VerticalSlider = ss.SurveyComponent.from_st_input(vertical_slider)
 ParametricQualitative = ss.SurveyComponent.from_st_input(_qualitative)
+ParametricQuantitative = ss.SurveyComponent.from_st_input(_quantitative)
 Button = ss.SurveyComponent.from_st_input(st.button)
 MandatoryDateRange = ss.SurveyComponent.from_st_input(_date_range_picker, decoder=date_decoder)
 # MandatoryDateRange = ss.SurveyComponent.from_st_input(_date_range_picker)
@@ -94,6 +102,9 @@ class CustomStreamlitSurvey(ss.StreamlitSurvey):
 
     def qualitative_parametric(self, label: str = "", id: str = None, key=None, **kwargs):
         return ParametricQualitative(self, label, id, **kwargs).display()
+
+    def quantitative(self, label: str = "", id: str = None, key=None, **kwargs):
+        return ParametricQuantitative(self, label, id, **kwargs).display()
 
     def button(self, label: str = "", id: str = None, **kwargs) -> str:
         return Button(self, label, id, **kwargs).display()
