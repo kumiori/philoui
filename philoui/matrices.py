@@ -43,8 +43,7 @@ def generate_random_matrix(size):
     return np.random.choice(all_characters, size=(size, size))
     # # return matrix
     return [[np.random.choice(characters) for _ in range(size)] for _ in range(size)]
-
-
+    
 # Function to display the matrix in a fixed-size container
 def display_matrix(matrix):
     num_cols = len(matrix)

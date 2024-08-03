@@ -33,3 +33,4 @@ matplotlib==3.8.2
 fuzzywuzzy==0.18.0
 extra-streamlit-components==0.1.60
 opencage==2.4.0
+emoji==2.8.0
