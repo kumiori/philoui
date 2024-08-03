@@ -9,8 +9,6 @@ st.set_page_config(
 import streamlit_survey as ss
 from streamlit_vertical_slider import vertical_slider
 
-import philoui as philoui
-
 from philoui.io import (conn, create_button, create_checkbox, create_dichotomy, create_equaliser, create_globe,
                     create_next, create_qualitative, create_quantitative, create_textinput, create_yesno, create_yesno_row, fetch_and_display_data)
 from philoui.survey import CustomStreamlitSurvey
