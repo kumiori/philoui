@@ -166,7 +166,7 @@ def create_globe(key, kwargs = {'database': 'gathering', 'table': 'gathering'}):
     const world = Globe()
         (document.getElementById('globeViz'))
         .globeImageUrl('//unpkg.com/three-globe/example/img/earth-dark.jpg')
-        .backgroundColor('white')
+        .backgroundColor('#F5F5DC')
         .tilesData([solarTile])
         .tileLng(d => d.pos[0])
         .tileLat(d => d.pos[1])
