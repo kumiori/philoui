@@ -111,4 +111,21 @@ class CustomStreamlitSurvey(ss.StreamlitSurvey):
     
     def mandatory_date_range(self, name: str = "", id: str = None, **kwargs) -> str:
         return MandatoryDateRange(self, name=name, id=id, **kwargs).display()
+
+def create_flag_ui(pages, survey):
+    # Checkbox to flag the question
+    flag_question = st.checkbox(f"This question (Q{pages.current + 1}) is inappropriate, misplaced, ill-formed, abusive, unfit, or unclear")
+
+    # If the question is flagged, show a text input for the user to provide details
+    flag_reason = ""
+    
+    if "flagged_questions" not in survey.data:
+        survey.data["flagged_questions"] = {}
+
+    if flag_question:
+        flag_reason = st.text_area("Let me specify why I think this question is inappropriate or unclear...")
+        survey.data["flagged_questions"][f"Question {pages.current + 1}"] = {
+                        "reason": flag_reason
+                    }
+
     

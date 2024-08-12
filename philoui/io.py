@@ -12,7 +12,7 @@ conn = st.connection("supabase", type=SupabaseConnection)
 def create_button(key, kwargs = {}):
     return st.button(label=key)
 
-def create_dichotomy(key, kwargs = {}):
+def create_dichotomy(key, id = None, kwargs = {}):
     st.divider()
     survey = kwargs.get('survey')
     label = kwargs.get('label', 'Confidence')
@@ -42,7 +42,7 @@ def create_dichotomy(key, kwargs = {}):
     st.divider()
     return response
 
-def create_dichotomy_with3cols(key, kwargs = {}):
+def create_dichotomy_with3cols(key, id = None, kwargs = {}):
     survey = kwargs.get('survey')
     label = kwargs.get('label', 'Confidence')
     name = kwargs.get('name', 'there')
@@ -75,7 +75,7 @@ def create_dichotomy_with3cols(key, kwargs = {}):
         st.markdown(_response)
     return response
 
-def create_qualitative(key, kwargs = {}):
+def create_qualitative(key, id = None, kwargs = {}):
     survey = kwargs.get('survey')
     _response = survey.qualitative_parametric(name="Spirit",
             question = "Support, Donate, or Invest?",
@@ -85,7 +85,7 @@ def create_qualitative(key, kwargs = {}):
     st.write('You picked', _response)
     return _response   
 
-def create_quantitative(key, kwargs = {}):
+def create_quantitative(key, id = None, kwargs = {}):
     survey = kwargs.get('survey')
     _response = survey.quantitative(name="Spirit",
             question = "How tricky is Quantity?",
@@ -256,7 +256,7 @@ def create_checkbox(key, kwargs = {'label': 'Choose'}):
     survey = kwargs.get('survey')
     return survey.checkbox(kwargs.get('label', ''), key=key)
 
-def create_equaliser(key, kwargs={}):
+def create_equaliser(key, id = None, kwargs={}):
     survey = kwargs.get('survey')
     rows = 1
     dimensions = kwargs["data"]
@@ -270,6 +270,7 @@ def create_equaliser(key, kwargs={}):
             with column:
                 survey.equaliser(
                     label=dimensions[i + j*split_len][0],
+                    id = id+f'_{i + j*split_len}',
                     height=200,
                     key=f"cat_{i}_{j}",
                     default_value = 0,

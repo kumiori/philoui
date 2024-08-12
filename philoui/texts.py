@@ -32,9 +32,6 @@ def _stream_example(text, damage):
     # Define sleep lengths for different punctuation symbols
     sleep_lengths = {'.': 1., ',': 0.3, '!': 1.7, '?': 1.5, ';': 0.4, ':': 0.4}
     sleep_lengths = {key: value * (1. + damage) for key, value in sleep_lengths.items()}
-    # st.json(sleep_lengths)
-
-    # st.write(sleep_lengths.values() * (1+damage))
     
     for i, word in enumerate(text.split()):
         # Check if the last character is a punctuation symbol
@@ -49,12 +46,12 @@ def _stream_example(text, damage):
         if last_char and last_char in sleep_lengths:
             time.sleep(sleep_lengths[last_char])
         else:
-            time.sleep(0.3)
+            time.sleep(0.2)
  
 def hash_text(text):
     return hashlib.sha256(text.encode()).hexdigest()
 
-def _stream_once(text, damage):
+def _stream_once(text, damage=0):
     text_hash = hash_text(text)
 
     # Define sleep lengths for different punctuation symbols
@@ -85,6 +82,9 @@ def _stream_once(text, damage):
             
         st.session_state["read_texts"].add(text_hash)  # Marking text as read
 
+def stream_text(text):
+    return st.write_stream(_stream_example(text, 0))
+
 def create_streamed_columns(panel):
     num_panels = len(panel)
     
@@ -106,7 +106,6 @@ def match_input(input_text, translation_dict):
         return matching_keys
     else:
         return False
-
 
 def friendly_time(timestamp):
     from datetime import datetime

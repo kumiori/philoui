@@ -97,7 +97,7 @@ def main():
     st.toast(f'Status: {st.secrets["runtime"]["STATUS"]}')
     
     st.markdown("""
-### This helps us have difficult conversations                
+### This helps us have very difficult conversations                
                 
 We are currently in the testing phase of our _philosophically informed_ user interface widgets. These widgets are designed to facilitate engaging and meaningful user interactions within the context of our upcoming coordination games. By leveraging thoughtful design and intuitive elements, we aim to enhance user experience and foster deeper connections and understanding through our platform.
 
