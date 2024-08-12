@@ -49,7 +49,6 @@ class _AuthenticationModel(AuthenticationModel):
             st.session_state['authentication_status'] = False
             return False
         if token:
-            st.write(f"token: {token}")
             # if not token['username'] in self.credentials['usernames']:
             if not self._valid_access_key(token['username']):
                 st.info('User not authorized')
@@ -188,7 +187,7 @@ class AuthenticateWithKey(Authenticate):
 
         if not st.session_state['authentication_status']:
             token = self.cookie_controller.get_cookie()
-            st.write(f"token: {token}")
+            # st.write(f"token: {token}")
             if token:
                 self.authentication_controller.login(token=token)
             login_form = st.form('Connect')
