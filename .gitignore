@@ -3,4 +3,4 @@
 philoui.egg-info/**
 philoui/__pycache__/**
 **/.DS_Store
-philoui/philoui_selectors/**
+philoui/philoui_selectors/frontend/node_modules/**
