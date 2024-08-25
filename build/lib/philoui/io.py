@@ -77,12 +77,12 @@ def create_dichotomy_with3cols(key, id = None, kwargs = {}):
 
 def create_qualitative(key, id = None, kwargs = {}):
     survey = kwargs.get('survey')
-    _response = survey.qualitative_parametric(name="Spirit",
-            question = "Support, Donate, or Invest?",
+    _response = survey.qualitative_parametric(name=kwargs.get("name", "Spirit"),
+            question = kwargs.get("question", "Support, Invest, or Invest?"),
             label="Qualitative",
             areas = 3,
             key = "parametric")
-    st.write('You picked', _response)
+    # st.write('You picked', _response)
     return _response   
 
 def create_quantitative(key, id = None, kwargs = {}):
