@@ -75,7 +75,7 @@ pandas==2.1.1
 pandocfilters==1.5.1
 parso==0.8.4
 pexpect==4.9.0
--e git+https://github.com/kumiori/philoui.git@748266d8d140e148f519b9e95c20fb12f3b8f63e#egg=philoui
+-e git+https://github.com/kumiori/philoui.git#egg=philoui
 pickleshare==0.7.5
 pillow==10.4.0
 pip-autoremove==0.10.0
