@@ -29,7 +29,7 @@ def create_dichotomy(key, id = None, kwargs = {}):
                             key=key)
     if response:
         st.markdown('\n')            
-        st.markdown(f'## Your choice: {inverse_choice(float(response))} or {float(response)}', unsafe_allow_html=True)
+        # st.markdown(f'## Your choice: {inverse_choice(float(response))} or {float(response)}', unsafe_allow_html=True)
         if float(response) < 0.1:
             st.success(messages[0])
         if float(response) > 0.9:
@@ -268,6 +268,7 @@ def create_equaliser(key, id = None, kwargs={}):
     with st.container():
         for i, column in enumerate(bottom_cols):
             with column:
+                print(i + j*split_len)
                 survey.equaliser(
                     label=dimensions[i + j*split_len][0],
                     id = id+f'_{i + j*split_len}',

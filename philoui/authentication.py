@@ -4,7 +4,7 @@ from streamlit_authenticator import Authenticate
 from philoui.io import conn as supabase
 from datetime import datetime, timedelta
 import hashlib
-from streamlit_authenticator.exceptions import CredentialsError, ForgotError, RegisterError, ResetError, UpdateError
+# from streamlit_authenticator.exceptions import CredentialsError, ForgotError, RegisterError, ResetError, UpdateError
 
 from philoui.geo import get_coordinates
 import random

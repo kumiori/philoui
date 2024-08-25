@@ -25,6 +25,8 @@ from philoui.geo import get_coordinates
 import streamlit_shadcn_ui as ui
 from streamlit_timeline import timeline
 
+st.write(st.secrets["runtime"]["STATUS"])
+
 if 'location' not in st.session_state:
     st.session_state.location = None
 
@@ -165,7 +167,7 @@ Three approaches to presenting dichotomous choices with interface design cater t
 
     st.subheader("Equaliser Widget")
 
-    create_equaliser(key = "equaliser", kwargs={"survey": survey, "data": equaliser_data})
+    create_equaliser(key = "equaliser", id="equaliser", kwargs={"survey": survey, "data": equaliser_data})
     
     st.subheader("Next Widget")
     

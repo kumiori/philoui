@@ -107,6 +107,10 @@ def match_input(input_text, translation_dict):
     else:
         return False
 
+        
+def mask_string(s):
+    return f"{s[0:4]}***{s[-4:]}"
+
 def friendly_time(timestamp):
     from datetime import datetime
 
