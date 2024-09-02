@@ -101,7 +101,6 @@ class QualitativeParametricSelector extends StreamlitComponentBase<State> {
         if (index === 0) {
           areaProps.width = '100%';
           areaProps.height = '100%';
-          areaProps.fill = '#383838';
           areaProps.cx = 300;
           areaProps.cy = 100;
           areaProps.rx = 450; // Customize ellipse properties
