@@ -106,7 +106,7 @@ class QualitativeParametricSelector extends StreamlitComponentBase<State> {
           areaProps.cy = 100;
           areaProps.rx = 450; // Customize ellipse properties
           areaProps.ry = 250;
-          areaProps.fill = '#444444'; // Alternate colors
+          areaProps.fill = '#FFA07A'; // Alternate colors
         } else {
           areaProps.cx = 230;
           areaProps.cy = 100;
