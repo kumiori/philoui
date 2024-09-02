@@ -82,7 +82,6 @@ def create_qualitative(key, id = None, kwargs = {}):
             label="Qualitative",
             areas = 3,
             key = "parametric")
-    # st.write('You picked', _response)
     return _response   
 
 def create_quantitative(key, id = None, kwargs = {}):
@@ -92,7 +91,6 @@ def create_quantitative(key, id = None, kwargs = {}):
             label="Quantitative",
             data_values = [1, 10, 100, 0.1],
             key = "quantitative")
-    st.write('You picked', _response)
     return _response
     
 
