@@ -133,9 +133,9 @@ class QualitativeParametricSelector extends StreamlitComponentBase<State> {
     return (
       <div id="happy">
         <span>
-          For you to decide, {name}
           <p>{ question }</p>
-          <p>Click on the area that corresponds to your choice: {dataValues.map((value, index) => index === lastIndex ? value : `${value}, `)}</p>
+          {/*  {dataValues.map((value, index) => index === lastIndex ? value : `${value}, `)} */}
+          <p>Click on the area that corresponds to your choice.</p>
         </span>
         <svg className="col-md-12 col-sm-12" height="200">
           {/* {renderActiveAreas(areas, dataValues)} */}

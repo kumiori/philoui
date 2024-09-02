@@ -29,7 +29,6 @@ def create_dichotomy(key, id = None, kwargs = {}):
                             key=key)
     if response:
         st.markdown('\n')            
-        # st.markdown(f'## Your choice: {inverse_choice(float(response))} or {float(response)}', unsafe_allow_html=True)
         if float(response) < 0.1:
             st.success(messages[0])
         if float(response) > 0.9:
@@ -82,7 +81,6 @@ def create_qualitative(key, id = None, kwargs = {}):
             label="Qualitative",
             areas = 3,
             key = "parametric")
-    # st.write('You picked', _response)
     return _response   
 
 def create_quantitative(key, id = None, kwargs = {}):
