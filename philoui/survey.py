@@ -34,13 +34,13 @@ def _dichotomy(name, question, label, rotationAngle = 0, gradientWidth = 40, hei
     shift = shift
     )
     
-def _qualitative(name, question, label, areas, key=None):
+def _qualitative(name, question, label, areas, data_values = [1, 2, 10], key=None):
     return _qualitative_selector(component = "parametric",
     name = name,
     label = label,
     key=key,
     areas = areas,
-    data_values  = [1, 2, 10],
+    data_values = data_values,
     question = question)
 
 def _quantitative(name, question, label, data_values, key=None):

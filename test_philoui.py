@@ -188,8 +188,9 @@ Three approaches to presenting dichotomous choices with interface design cater t
     # Example 3: Create Qualitative Parametric
     st.subheader("Qualitative Parametric Widget")
     qualitative_key = "demo_qualitative"
-    
     create_qualitative(qualitative_key, kwargs={"survey": survey})
+    
+    create_qualitative(qualitative_key, kwargs={"survey": survey, "label": "Quali2", "key": "demo_qualitative_2", "data_values": [1, 2]})
 
     quantitative_key = "demo_quantitative"
     create_quantitative(quantitative_key, kwargs={"survey": survey})
