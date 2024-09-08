@@ -65,7 +65,6 @@ class QualitativeSelector extends StreamlitComponentBase<State> {
           Hello, {name},
           <br />
 
-          <p>{question} Let's find {lastIndex+1} tiers</p>
           <p>Data Values: {dataValues.map((value, index) => index === lastIndex ? value : `${value}, `)}</p>
 
         </span>
@@ -79,7 +78,7 @@ class QualitativeSelector extends StreamlitComponentBase<State> {
                   data-value={value}
                   width="100%"
                   height="100%"
-                  fill="#383838"
+                  fill="#FFA07A"
                   onClick={handleElementEvent}
                 ></rect>
               )}
@@ -122,7 +121,7 @@ class QualitativeSelector extends StreamlitComponentBase<State> {
             <React.Fragment key={index}>
               <text
                 key={`text${index}`}
-                x={cx - 0.9*(250 - index * 60)} // Adjusted x position for text
+                x={cx } // Adjusted x position for text
                 y={.55*index/lastIndex * cy + 50} // Fixed y position for text
                 // fill="red"
                 // fill={index % 2 === 0 ? '#c9c9c9' : 'black'}

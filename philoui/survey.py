@@ -43,7 +43,7 @@ def _qualitative(name, question, label, areas, data_values = [1, 2, 10], key=Non
     data_values = data_values,
     question = question)
 
-def _quantitative(name, question, label, data_values, key=None):
+def parametric_quantitative(name, question, label, data_values, key=None):
     return _qualitative_selector(component = "qualitative",
     name = name,
     label = label,
@@ -86,7 +86,7 @@ def date_decoder(date_obj):
 Dichotomy = ss.SurveyComponent.from_st_input(_dichotomy)
 VerticalSlider = ss.SurveyComponent.from_st_input(vertical_slider)
 ParametricQualitative = ss.SurveyComponent.from_st_input(_qualitative)
-ParametricQuantitative = ss.SurveyComponent.from_st_input(_quantitative)
+ParametricQuantitative = ss.SurveyComponent.from_st_input(parametric_quantitative)
 Button = ss.SurveyComponent.from_st_input(st.button)
 MandatoryDateRange = ss.SurveyComponent.from_st_input(_date_range_picker, decoder=date_decoder)
 # MandatoryDateRange = ss.SurveyComponent.from_st_input(_date_range_picker)

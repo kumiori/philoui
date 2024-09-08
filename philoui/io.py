@@ -89,9 +89,9 @@ def create_quantitative(key, id = None, kwargs = {}):
     survey = kwargs.get('survey')
     # print(kwargs.get('key', "quantitative"))
     _response = survey.quantitative(name="Spirit",
-            question = "How tricky is Quantity?",
-            label="Quantitative",
-            data_values = [1, 10, 100, 0.1],
+            question = kwargs.get('question', "How tricky is Quantity?"),
+            label=kwargs.get('label', "Quantitative"),
+            data_values = kwargs.get('data_values', [1, 10, 100, 0.1]),
             key = kwargs.get('key', "quantitative"))
     return _response
     

@@ -25,7 +25,6 @@ class Dichotomy extends StreamlitComponentBase<State> {
         const height = this.props.args["height"]
         const rotationAngle = this.props.args["rotationAngle"]; // Specify the desired rotation angle in degrees
         const gradientWidth = this.props.args["gradientWidth"]; // Specify the desired rotation angle in degrees
-        // const shift = this.props.args["shift"]; // Specify the desired rotation angle in degrees
         const invertColors = this.props.args["invert"] ?? false;
         const shift = this.props.args["shift"] ?? false;
         // const shift = 40;
@@ -136,7 +135,6 @@ class Dichotomy extends StreamlitComponentBase<State> {
                         height="100%"
                         fill={color1}
                         transform={`rotate(${rotationAngle} 0 0)`} // Rotate the first rectangle
-                        // y="-300"  // Adjusted y position for the third rectangle
                         onClick={(e) => handleElementClickBoundary(e)}
                         data-value='0'
                     />

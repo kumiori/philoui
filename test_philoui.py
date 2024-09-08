@@ -195,6 +195,9 @@ Three approaches to presenting dichotomous choices with interface design cater t
     quantitative_key = "demo_quantitative"
     create_quantitative(quantitative_key, kwargs={"survey": survey})
 
+
+    quanti_2 = create_quantitative(quantitative_key, kwargs={"survey": survey, "label": "Quanti2", "key": "demo_quantitative_2",  "data_values": [1, 2]})
+    st.write(quanti_2)
     # Example 4: Create Yes/No Buttons
     st.subheader("Yes/No Buttons Widget")
     create_yesno_row("demo_yesno_row", kwargs={"survey": survey})
