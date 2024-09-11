@@ -265,11 +265,11 @@ class AuthenticateWithKey(Authenticate):
             register_user_form.image(Helpers.generate_captcha('register_user_captcha'))
 
         access_key_hash = hashlib.sha256(str(random.getrandbits(256)).encode()).hexdigest()
-        st.toast(f'Created access key: {access_key_hash}, waiting for participant to authorise')
+        print(f'Created access key: {access_key_hash}, waiting for participant to authorise')
         if register_user_form.form_submit_button('`Here` • `Now`' if 'Register' not in fields
                                                  else fields['Register']):
             return self.authentication_controller.register_user(access_key_hash,
                                                                 pre_authorization, domains,
-                                                                callback, captcha, entered_captcha)
+                                                                 callback, captcha, entered_captcha)
         return None, None, None
 
