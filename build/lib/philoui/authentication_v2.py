@@ -17,7 +17,7 @@ class _AuthenticationModel(AuthenticationModel):
     def __init__(self, credentials: dict, pre_authorized: Optional[List[str]]=None,
                  validator: Optional[Validator]=None, auto_hash: bool=True):
         self.credentials = credentials
-        st.toast(f'Webapp {self.credentials["webapp"]}')
+        print(f'Webapp {self.credentials["webapp"]}')
         self.participants = {}
         if 'authentication_status' not in st.session_state:
             st.session_state['authentication_status'] = None
