@@ -62,11 +62,10 @@ class QualitativeSelector extends StreamlitComponentBase<State> {
     return (
       <div id="happy">
         <span>
-          Hello, {name},
+          {name}
           <br />
-
-          <p>Data Values: {dataValues.map((value, index) => index === lastIndex ? value : `${value}, `)}</p>
-
+          {question}
+          {/* <p>Data Values: {dataValues.map((value, index) => index === lastIndex ? value : `${value}, `)}</p> */}
         </span>
         <svg className="col-md-12 col-sm-12" height="200">
           {dataValues.map((value, index) => (
