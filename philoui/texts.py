@@ -82,6 +82,14 @@ def _stream_once(text, damage=0):
             
         st.session_state["read_texts"].add(text_hash)  # Marking text as read
 
+def stream_once_then_write(text):
+    text_hash = hash_text(text)
+    if text_hash not in st.session_state["read_texts"]:
+        stream_text(text)
+        st.session_state["read_texts"].add(text_hash)
+    else:
+        st.markdown(text)
+
 def stream_text(text):
     return st.write_stream(_stream_example(text, 0))
 
@@ -107,7 +115,7 @@ def match_input(input_text, translation_dict):
     else:
         return False
 
-        
+
 def mask_string(s):
     return f"{s[0:4]}***{s[-4:]}"
 
