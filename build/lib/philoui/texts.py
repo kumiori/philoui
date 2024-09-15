@@ -85,6 +85,15 @@ def _stream_once(text, damage=0):
 def stream_text(text):
     return st.write_stream(_stream_example(text, 0))
 
+
+def stream_once_then_write(text):
+    text_hash = hash_text(text)
+    if text_hash not in st.session_state["read_texts"]:
+        stream_text(text)
+        st.session_state["read_texts"].add(text_hash)
+    else:
+        st.markdown(text)
+
 def create_streamed_columns(panel):
     num_panels = len(panel)
     
