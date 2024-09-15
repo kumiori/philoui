@@ -20,7 +20,7 @@ from philoui.authentication import _Authenticate
 from philoui.matrices import generate_random_matrix, encode_matrix, display_matrix
 from philoui.dictionary_manip import display_dictionary, display_dictionary_by_indices, display_details_description
 from philoui.survey import CustomStreamlitSurvey
-from philoui.texts import _stream_example, corrupt_string
+from philoui.texts import _stream_example, corrupt_string, stream_once_then_write
 from philoui.geo import get_coordinates
 import streamlit_shadcn_ui as ui
 from streamlit_timeline import timeline
@@ -225,6 +225,12 @@ Three approaches to presenting dichotomous choices with interface design cater t
     st.subheader("Timeline Widget")
     timeline(timeline_data, height=800)
 
-
+    stream_once_then_write("""
+There are really 4 philosophical questions
+who started it?
+are we gonna make it?
+where are we gonna put it?
+who's gonna clean up?
+                           """)
 if __name__ == "__main__":
     main()
