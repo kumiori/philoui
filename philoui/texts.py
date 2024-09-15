@@ -82,12 +82,29 @@ def _stream_once(text, damage=0):
             
         st.session_state["read_texts"].add(text_hash)  # Marking text as read
 
-def stream_once_then_write(text):
+def stream_once_then_write(text, stream_function=None):
+    """
+    Stream the text using the provided stream_function or default to st.write_stream.
+
+    Parameters:
+    text (str): The text to stream or display.
+    stream_function (callable, optional): A function to handle the streaming. Defaults to None, in which case a default streaming method is used.
+    """
     text_hash = hash_text(text)
+    
+    # Check if the text has already been read/streamed
     if text_hash not in st.session_state["read_texts"]:
-        stream_text(text)
+        if stream_function:
+            # Use the provided stream_function to handle the streaming
+            st.write_stream(stream_function(text))
+        else:
+            # Default streaming function
+            st.write_stream(_stream_example(text, 0))
+        
+        # Mark the text as streamed/read
         st.session_state["read_texts"].add(text_hash)
     else:
+        # If already streamed, simply render the markdown
         st.markdown(text)
 
 def stream_text(text):

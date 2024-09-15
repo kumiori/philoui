@@ -20,6 +20,7 @@ from philoui.authentication import _Authenticate
 from philoui.matrices import generate_random_matrix, encode_matrix, display_matrix
 from philoui.dictionary_manip import display_dictionary, display_dictionary_by_indices, display_details_description
 from philoui.survey import CustomStreamlitSurvey
+from philoui import texts
 from philoui.texts import _stream_example, corrupt_string, stream_once_then_write
 from philoui.geo import get_coordinates
 import streamlit_shadcn_ui as ui
@@ -32,6 +33,10 @@ if 'location' not in st.session_state:
 
 if 'coordinates' not in st.session_state:
     st.session_state.coordinates = None
+
+
+if 'read_texts' not in st.session_state:
+    st.session_state['read_texts'] = set()
 
 current_year = datetime.now().year
 
@@ -93,6 +98,29 @@ timeline_data = {
       }
     ]
 }
+
+import time
+import string
+
+def _stream_example(text, damage=0):
+  # Define sleep lengths for different punctuation symbols
+  sleep_lengths = {'.': 1.5, ',': 0.5, '!': 1.7, '?': 2.5, ';': 1.4, ':': 1.4}
+  sleep_lengths = {key: value * (1. + damage) for key, value in sleep_lengths.items()}
+
+  for i, word in enumerate(text.split()):
+      # Check if the last character is a punctuation symbol
+      last_char = word[-1] if word[-1] in string.punctuation else None
+
+      # Yield the word with appropriate sleep length
+      if last_char == '.' or last_char == '?' or last_char == '^':
+          yield word + " \n "
+      else:
+          yield word + " "
+      
+      if last_char and last_char in sleep_lengths:
+          time.sleep(sleep_lengths[last_char])
+      else:
+          time.sleep(0.3)
 
 def main():
     st.title("Testing philoui Widgets")
@@ -225,12 +253,52 @@ Three approaches to presenting dichotomous choices with interface design cater t
     st.subheader("Timeline Widget")
     timeline(timeline_data, height=800)
 
-    stream_once_then_write("""
+    
+    st.subheader("""Default Stream then Write""")
+    
+    text = """
 There are really 4 philosophical questions
 who started it?
 are we gonna make it?
 where are we gonna put it?
 who's gonna clean up?
-                           """)
+                           """
+                           
+    stream_once_then_write(text)
+    
+    # st.markdown("""
+    # <pre>
+    # def _stream_example(text, damage):
+    #     # Define sleep lengths for different punctuation symbols
+    #     sleep_lengths = {'.': 1., ',': 0.3, '!': 1.7, '?': 1.5, ';': 0.4, ':': 0.4}
+    #     sleep_lengths = {key: value * (1. + damage) for key, value in sleep_lengths.items()}
+
+    #     for i, word in enumerate(text.split()):
+    #         # Check if the last character is a punctuation symbol
+    #         last_char = word[-1] if word[-1] in string.punctuation else None
+
+    #         # Yield the word with appropriate sleep length
+    #         if last_char == '.' or last_char == '?' or last_char == '^':
+    #             yield word + " \n "
+    #         else:
+    #             yield word + " "
+            
+    #         if last_char and last_char in sleep_lengths:
+    #             time.sleep(sleep_lengths[last_char])
+    #         else:
+    #             time.sleep(0.3)
+    #     </pre>            
+    # """, unsafe_allow_html=True) 
+    
+    stream_once_then_write("""
+cute .. of confronting ourself with the most radical problem of humans' rekation to their world
+yet at the same tiem thiss vast extension of jknowledge adn power
+beig out of control
+lacking the wisdom 
+enormity of our information
+and our technical skill
+
+                           """, stream_function=_stream_example)
+                  
 if __name__ == "__main__":
     main()
