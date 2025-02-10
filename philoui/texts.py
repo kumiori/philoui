@@ -1,15 +1,15 @@
 import streamlit as st
 import time
-from streamlit_extras.streaming_write import write as streamwrite 
+from streamlit_extras.streaming_write import write as streamwrite
 import random
 import string
 import hashlib
 
 # Initialize read_texts set in session state if not present
-st.write(st.session_state)
 
-if 'read_texts' not in st.session_state:
-    st.session_state['read_texts'] = set()
+if "read_texts" not in st.session_state:
+    st.session_state["read_texts"] = set()
+
 
 def corrupt_string(input_str, damage_parameter):
     # Define the list of symbols
@@ -26,37 +26,44 @@ def corrupt_string(input_str, damage_parameter):
     for index in indices_to_replace:
         corrupted_list[index] = random.choice(symbols)
 
-    return ''.join(corrupted_list), num_chars_to_replace
+    return "".join(corrupted_list), num_chars_to_replace
+
 
 def _stream_example(text, damage):
     # Define sleep lengths for different punctuation symbols
-    sleep_lengths = {'.': 1., ',': 0.3, '!': 1.7, '?': 1.5, ';': 0.4, ':': 0.4}
-    sleep_lengths = {key: value * (1. + damage) for key, value in sleep_lengths.items()}
-    
+    sleep_lengths = {".": 1.0, ",": 0.3, "!": 1.7, "?": 1.5, ";": 0.4, ":": 0.4}
+    sleep_lengths = {
+        key: value * (1.0 + damage) for key, value in sleep_lengths.items()
+    }
+
     for i, word in enumerate(text.split()):
         # Check if the last character is a punctuation symbol
         last_char = word[-1] if word[-1] in string.punctuation else None
 
         # Yield the word with appropriate sleep length
-        if last_char == '.' or last_char == '?' or last_char == '^':
+        if last_char == "." or last_char == "?" or last_char == "^":
             yield word + " \n "
         else:
             yield word + " "
-        
+
         if last_char and last_char in sleep_lengths:
             time.sleep(sleep_lengths[last_char])
         else:
             time.sleep(0.2)
- 
+
+
 def hash_text(text):
     return hashlib.sha256(text.encode()).hexdigest()
+
 
 def _stream_once(text, damage=0):
     text_hash = hash_text(text)
 
     # Define sleep lengths for different punctuation symbols
-    sleep_lengths = {'.': 1., ',': 0.3, '!': 1.7, '?': 1.5, ';': 0.4, ':': 0.4}
-    sleep_lengths = {key: value * (1. + damage) for key, value in sleep_lengths.items()}
+    sleep_lengths = {".": 1.0, ",": 0.3, "!": 1.7, "?": 1.5, ";": 0.4, ":": 0.4}
+    sleep_lengths = {
+        key: value * (1.0 + damage) for key, value in sleep_lengths.items()
+    }
     # st.json(sleep_lengths)
 
     # st.write(sleep_lengths.values() * (1+damage))
@@ -64,23 +71,24 @@ def _stream_once(text, damage=0):
     # Check if the text has already been read
     if text_hash not in st.session_state["read_texts"]:
         # st.write(text)
-    
+
         for i, word in enumerate(text.split()):
             # Check if the last character is a punctuation symbol
             last_char = word[-1] if word[-1] in string.punctuation else None
 
             # Yield the word with appropriate sleep length
-            if last_char == '.' or last_char == '?' or last_char == '^':
+            if last_char == "." or last_char == "?" or last_char == "^":
                 yield word + " \n "
             else:
                 yield word + " "
-            
+
             if last_char and last_char in sleep_lengths:
                 time.sleep(sleep_lengths[last_char])
             else:
                 time.sleep(0.3)
-            
+
         st.session_state["read_texts"].add(text_hash)  # Marking text as read
+
 
 def stream_once_then_write(text, stream_function=None):
     """
@@ -91,7 +99,7 @@ def stream_once_then_write(text, stream_function=None):
     stream_function (callable, optional): A function to handle the streaming. Defaults to None, in which case a default streaming method is used.
     """
     text_hash = hash_text(text)
-    
+
     # Check if the text has already been read/streamed
     if text_hash not in st.session_state["read_texts"]:
         if stream_function:
@@ -100,32 +108,39 @@ def stream_once_then_write(text, stream_function=None):
         else:
             # Default streaming function
             st.write_stream(_stream_example(text, 0))
-        
+
         # Mark the text as streamed/read
         st.session_state["read_texts"].add(text_hash)
     else:
         # If already streamed, simply render the markdown
         st.markdown(text)
 
+
 def stream_text(text):
     return st.write_stream(_stream_example(text, 0))
 
+
 def create_streamed_columns(panel):
     num_panels = len(panel)
-    
+
     for i in range(num_panels):
         width_pattern = [2, 1] if i % 2 == 0 else [1, 2]
         cols = st.columns(width_pattern)
 
-        col_idx = 0  if i % 2 == 0 else 1
+        col_idx = 0 if i % 2 == 0 else 1
         with cols[col_idx]:
             streamwrite(_stream_once(panel[i], 0))
+
 
 def match_input(input_text, translation_dict):
     if not input_text:
         return None
-    
-    matching_keys = [key for key, value in translation_dict.items() if value.lower() == input_text.lower()]
+
+    matching_keys = [
+        key
+        for key, value in translation_dict.items()
+        if value.lower() == input_text.lower()
+    ]
 
     if matching_keys:
         return matching_keys
@@ -136,13 +151,14 @@ def match_input(input_text, translation_dict):
 def mask_string(s):
     return f"{s[0:4]}***{s[-4:]}"
 
+
 def friendly_time(timestamp):
     from datetime import datetime
 
     human_readable_time = datetime.utcfromtimestamp(timestamp)
 
-    hour = human_readable_time.strftime('%-I')
-    minute = human_readable_time.strftime('%-M')
+    hour = human_readable_time.strftime("%-I")
+    minute = human_readable_time.strftime("%-M")
     _period = human_readable_time.strftime("%p")
     print(_period)
     # period = 'in the morning' if datetime.utcfromtimestamp(timestamp).strftime('%p').lower() == 'am' else 'in the afternoon'

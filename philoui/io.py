@@ -9,26 +9,30 @@ from philoui.texts import friendly_time
 
 conn = st.connection("supabase", type=SupabaseConnection)
 
-def create_button(key, kwargs = {}):
+
+def create_button(key, kwargs={}):
     return st.button(label=key)
 
-def create_dichotomy(key, id = None, kwargs = {}):
+
+def create_dichotomy(key, id=None, kwargs={}):
     st.divider()
-    survey = kwargs.get('survey')
-    label = kwargs.get('label', 'Confidence')
-    name = kwargs.get('name', 'there')
-    question = kwargs.get('question', 'Dychotomies, including time...')
-    messages = kwargs.get('messages', ["🖤", "Meh. Balloons?", "... in between ..."])
-    inverse_choice = kwargs.get('inverse_choice', lambda x: x)
-    _response = kwargs.get('response', '## You can always change your mind.')
-    col1, col2, col3 = st.columns([3, .1, 1])
-    response = survey.dichotomy(name=name, 
-                            label=label,
-                            question=question,
-                            gradientWidth = kwargs.get('gradientWidth', 30), 
-                            key=key)
+    survey = kwargs.get("survey")
+    label = kwargs.get("label", "Confidence")
+    name = kwargs.get("name", "there")
+    question = kwargs.get("question", "Dychotomies, including time...")
+    messages = kwargs.get("messages", ["🖤", "Meh. Balloons?", "... in between ..."])
+    inverse_choice = kwargs.get("inverse_choice", lambda x: x)
+    _response = kwargs.get("response", "You can always change your mind.")
+    col1, col2, col3 = st.columns([3, 0.1, 1])
+    response = survey.dichotomy(
+        name=name,
+        label=label,
+        question=question,
+        gradientWidth=kwargs.get("gradientWidth", 30),
+        key=key,
+    )
     if response:
-        st.markdown('\n')            
+        st.markdown("\n")
         if float(response) < 0.1:
             st.success(messages[0])
         if float(response) > 0.9:
@@ -36,32 +40,35 @@ def create_dichotomy(key, id = None, kwargs = {}):
         elif 0.1 < float(response) < 0.9:
             st.success(messages[2])
     else:
-        st.markdown(f'#### Take your time:', unsafe_allow_html=True)
+        st.markdown(f"#### Take your time:", unsafe_allow_html=True)
         st.markdown(_response)
     st.divider()
     return response
 
-def create_dichotomy_with3cols(key, id = None, kwargs = {}):
-    survey = kwargs.get('survey')
-    label = kwargs.get('label', 'Confidence')
-    name = kwargs.get('name', 'there')
-    question = kwargs.get('question', 'Dychotomies, including time...')
-    messages = kwargs.get('messages', ["🖤", "Meh. Balloons?", "... in between ..."])
-    inverse_choice = kwargs.get('inverse_choice', lambda x: x)
-    _response = kwargs.get('response', '## You can always change your mind.')
-    col1, col2, col3 = st.columns([3, .1, 1])
-    with col1:    
-        response = survey.dichotomy(name=name, 
-                                label=label,
-                                question=question,
-                                gradientWidth = kwargs.get('gradientWidth', 30), 
-                                key=key)
+
+def create_dichotomy_with3cols(key, id=None, kwargs={}):
+    survey = kwargs.get("survey")
+    label = kwargs.get("label", "Confidence")
+    name = kwargs.get("name", "there")
+    question = kwargs.get("question", "Dychotomies, including time...")
+    messages = kwargs.get("messages", ["🖤", "Meh. Balloons?", "... in between ..."])
+    inverse_choice = kwargs.get("inverse_choice", lambda x: x)
+    _response = kwargs.get("response", "-")
+    col1, col2, col3 = st.columns([3, 0.1, 1])
+    with col1:
+        response = survey.dichotomy(
+            name=name,
+            label=label,
+            question=question,
+            gradientWidth=kwargs.get("gradientWidth", 30),
+            key=key,
+        )
     with col3:
         if response:
-            st.markdown('\n')            
-            st.markdown(f'## Your choice:', unsafe_allow_html=True)
-            st.markdown(f'## {inverse_choice(float(response))}')
-            st.markdown(f'{float(response)}', unsafe_allow_html=True)
+            st.markdown("\n")
+            st.markdown(f"## Your choice:", unsafe_allow_html=True)
+            st.markdown(f"## {inverse_choice(float(response))}")
+            st.markdown(f"{float(response)}", unsafe_allow_html=True)
             if float(response) < 0.1:
                 st.success(messages[0])
             if float(response) > 0.9:
@@ -69,78 +76,88 @@ def create_dichotomy_with3cols(key, id = None, kwargs = {}):
             elif 0.1 < float(response) < 0.9:
                 st.success(messages[2])
         else:
-            st.markdown(f'#### Take your time:', unsafe_allow_html=True)
+            st.markdown(f"#### Take your time:", unsafe_allow_html=True)
     if response:
         st.markdown(_response)
     return response
 
-def create_qualitative(key, id = None, kwargs = {}):
-    survey = kwargs.get('survey')
+
+def create_qualitative(key, id=None, kwargs={}):
+    survey = kwargs.get("survey")
     st.write(kwargs)
-    _response = survey.qualitative_parametric(name=kwargs.get("name", "Spirit"),
-            question = kwargs.get("question", "Support, Invest, or Invest?"),
-            label=kwargs.get("label", "Qualitative"),
-            areas = 3,
-            data_values = kwargs.get('data_values', [1, 2, 10]),
-            key = kwargs.get('key', "qualitative"))
-    return _response   
-
-def create_quantitative(key, id = None, kwargs = {}):
-    survey = kwargs.get('survey')
-    # print(kwargs.get('key', "quantitative"))
-    _response = survey.quantitative(name=kwargs.get('name', "Spirit,"),
-            question = kwargs.get('question', "How tricky is Quantity?"),
-            label=kwargs.get('label', "Quantitative"),
-            data_values = kwargs.get('data_values', [1, 10, 100, 0.1]),
-            key = kwargs.get('key', "quantitative"))
+    _response = survey.qualitative_parametric(
+        name=kwargs.get("name", "Spirit"),
+        question=kwargs.get("question", "Support, Invest, or Invest?"),
+        label=kwargs.get("label", "Qualitative"),
+        areas=3,
+        data_values=kwargs.get("data_values", [1, 2, 10]),
+        key=kwargs.get("key", "qualitative"),
+    )
+    st.write(_response)
     return _response
-    
 
-def create_yesno(key, kwargs = {}):
+
+def create_quantitative(key, id=None, kwargs={}):
+    survey = kwargs.get("survey")
+    # print(kwargs.get('key', "quantitative"))
+    _response = survey.quantitative(
+        name=kwargs.get("name", "Spirit,"),
+        question=kwargs.get("question", "How tricky is Quantity?"),
+        label=kwargs.get("label", "Quantitative"),
+        data_values=kwargs.get("data_values", [1, 10, 100, 0.1]),
+        key=kwargs.get("key", "quantitative"),
+    )
+    st.write(_response)
+    return _response
+
+
+def create_yesno(key, kwargs={}):
     survey = kwargs
-    callback_yes, callback_no = kwargs.get('callback', (lambda: None, lambda: None))
+    callback_yes, callback_no = kwargs.get("callback", (lambda: None, lambda: None))
     col1, col2 = st.columns(2)
     with col1:
         yes_clicked = st.button("Yes", key=f"{key}_yes", on_click=callback_yes)
     with col2:
         no_clicked = st.button("No", key=f"{key}_no", on_click=callback_no)
-    
+
     return
 
-def create_yesno_row(key, kwargs = {}):
-    survey = kwargs.get('survey')
-    callback_yes, callback_no = kwargs.get('callback', (lambda: None, lambda: None))
-    label_no, label_yes = kwargs.get('labels', ('Yes', 'No'))
-    
+
+def create_yesno_row(key, kwargs={}):
+    survey = kwargs.get("survey")
+    callback_yes, callback_no = kwargs.get("callback", (lambda: None, lambda: None))
+    label_no, label_yes = kwargs.get("labels", ("Yes", "No"))
+
     links_row = row(2, vertical_align="center")
     links_row.button(
         label_yes,
         use_container_width=True,
-        on_click = callback_no,
+        on_click=callback_no,
         key=f"{key}_no",
     )
 
-# ""
-# ""
+    # ""
+    # ""
     links_row.button(
         label_no,
         use_container_width=True,
-        on_click = callback_yes,
+        on_click=callback_yes,
         key=f"{key}_yes",
     )
 
-def create_next(key, kwargs = {}):
+
+def create_next(key, kwargs={}):
     survey = kwargs
     return st.button("Next", key=f"{key}")
 
-def create_globe(key, kwargs = {'database': 'gathering', 'table': 'gathering'}):
 
+def create_globe(key, kwargs={"database": "gathering", "table": "gathering"}):
     data = fetch_and_display_data(conn, kwargs)
-    
+
     # with stream:
-        # st.write('.........')
-        # .backgroundColor('rgb(14, 17, 23)')
-    
+    # st.write('.........')
+    # .backgroundColor('rgb(14, 17, 23)')
+
     # Generate JavaScript code with city data
     javascript_code = f"""
     import * as THREE from '//unpkg.com/three/build/three.module.js';
@@ -217,19 +234,20 @@ def create_globe(key, kwargs = {'database': 'gathering', 'table': 'gathering'}):
     col1, col2 = st.columns(2)
     with col1:
         st.components.v1.html(html_code, height=700, width=700)
-    
-    return 
 
-def create_textinput(key, kwargs = {}):
-    survey = kwargs.get('survey')
+    return
+
+
+def create_textinput(key, kwargs={}):
+    survey = kwargs.get("survey")
     text = survey.text_input(key, help="Help us best route your current location")
-    
+
     location = st.session_state.coordinates
-    
+
     # if location:
     #     with st.spinner():
     #         _lookup = reverse_lookup(st.secrets.opencage["OPENCAGE_KEY"], location)
-    
+
     #     data = _lookup
     #     # # Access relevant information from the first entry
     #     first_entry = data[0][0]
@@ -249,15 +267,16 @@ def create_textinput(key, kwargs = {}):
     #     st.markdown(f"In {text}, the sun rises at {friendly_time(sun_rise)} and sets at {friendly_time(sun_set)}.")
     #     # st.markdown(f"The sun rises at {sun_rise_readable} and sets at {sun_set_readable} in {text}.")
 
-
     #     st.markdown(f"## Forward, confirming that you connect from `{geographical_region}`")
 
-def create_checkbox(key, kwargs = {'label': 'Choose'}):
-    survey = kwargs.get('survey')
-    return survey.checkbox(kwargs.get('label', ''), key=key)
 
-def create_equaliser(key, id = None, kwargs={}):
-    survey = kwargs.get('survey')
+def create_checkbox(key, kwargs={"label": "Choose"}):
+    survey = kwargs.get("survey")
+    return survey.checkbox(kwargs.get("label", ""), key=key)
+
+
+def create_equaliser(key, id=None, kwargs={}):
+    survey = kwargs.get("survey")
     rows = 1
     dimensions = kwargs["data"]
     split_len = len(dimensions) // rows
@@ -268,24 +287,25 @@ def create_equaliser(key, id = None, kwargs={}):
     with st.container():
         for i, column in enumerate(bottom_cols):
             with column:
-                print(i + j*split_len)
+                print(i + j * split_len)
                 survey.equaliser(
-                    label=dimensions[i + j*split_len][0],
-                    id = id+f'_{i + j*split_len}',
+                    label=dimensions[i + j * split_len][0],
+                    id=id + f"_{i + j*split_len}",
                     height=200,
                     key=f"cat_{i}_{j}",
-                    default_value = 0,
+                    default_value=0,
                     step=1,
                     min_value=0,
-                    slider_color=('red','white'),
+                    slider_color=("red", "white"),
                     thumb_shape="circle",
                     max_value=100,
                     value_always_visible=True,
                 )
 
+
 def fetch_and_display_data(conn, kwargs):
     # Fetch all data from the "questionnaire" table
-    table_name = kwargs.get('database')
+    table_name = kwargs.get("database")
     st.write(f"Fetching data from the {table_name} table.")
     response = conn.table(table_name).select("*").execute()
     # st.write(response)
@@ -298,7 +318,13 @@ def fetch_and_display_data(conn, kwargs):
             # st.write(row)
             # st.write(f"Username: {row['name']} Id: {row['id']} timestamp: {row['created_at']}")
             # st.json(json.loads(row['response_data']))
-            _data.append({"lat": row["latitude"], "lng": row["longitude"], "luckynumber": row["luckynumber"]+1})
+            _data.append(
+                {
+                    "lat": row["latitude"],
+                    "lng": row["longitude"],
+                    "luckynumber": row["luckynumber"] + 1,
+                }
+            )
             # st.write("------------")
     else:
         st.write(f"No data found in the {table_name} table.")
@@ -310,37 +336,43 @@ class QuestionnaireDatabase:
         self.conn = conn
         self.table_name = table_name
 
-    def check_existence(self, key, key_label = 'signature'):
+    def check_existence(self, key, key_label="signature"):
         if key == "":
             st.error("Please provide a key.")
             return
 
         # Check if the username already exists
-        user_exists, count = self.conn.table(self.table_name) \
-            .select("*") \
-            .ilike(key_label, f'%{key}%') \
+        user_exists, count = (
+            self.conn.table(self.table_name)
+            .select("*")
+            .ilike(key_label, f"%{key}%")
             .execute()
+        )
 
         return len(user_exists[1]) > 0
 
-    def insert_data(self, key, key_label, data, data_label = 'response_data'):
+    def insert_data(self, key, key_label, data, data_label="response_data"):
         # Insert the data into the PostgreSQL table
         api = self.conn.table(self.table_name)
-        api.upsert([
-            {key_label: key, data_label: data}
-        ]).execute()
+        api.upsert([{key_label: key, data_label: data}]).execute()
         st.write("Data stored in the table.")
 
     def insert_or_update_data(self, username, data):
         try:
-            user_exists = self.check_existence(username.get('key'), username.get('label'))
+            user_exists = self.check_existence(
+                username.get("key"), username.get("label")
+            )
 
             if user_exists:
-                data = {data.get('label', 'data'): json.dumps(data.get('record'))}
+                data = {data.get("label", "data"): json.dumps(data.get("record"))}
                 # Username exists, update the existing record
-                update_query = self.conn.table(self.table_name).update(data).eq(username.get('label'), 
-                                                                                username.get('key')).execute()
-                
+                update_query = (
+                    self.conn.table(self.table_name)
+                    .update(data)
+                    .eq(username.get("label"), username.get("key"))
+                    .execute()
+                )
+
                 if update_query:
                     st.success(f"Data updated successfully.")
                 else:
@@ -348,18 +380,19 @@ class QuestionnaireDatabase:
             else:
                 # Username does not exist, insert a new record
                 # data = {'name': username, 'data': json.dumps(data)}
-                data = {username.get('label'): username.get('key'), 
-                        data.get('label', 'data'): json.dumps(data.get('record'))}
+                data = {
+                    username.get("label"): username.get("key"),
+                    data.get("label", "data"): json.dumps(data.get("record")),
+                }
                 # st.write(data)
                 insert_result = self.conn.table(self.table_name).upsert(data).execute()
                 st.info("Username does not exist, yet. Yet, accounted for preferences")
         except Exception as e:
             st.error(f"Error inserting or updating data in the database: {str(e)}")
 
-
-    def fetch_data(self, kwargs = {}):
+    def fetch_data(self, kwargs={}):
         # Fetch all data from the "questionnaire" table
-        if kwargs.get('verbose', False):
+        if kwargs.get("verbose", False):
             st.write(f"Fetching data from the {self.table_name} table.")
         response = self.conn.table(self.table_name).select("*").execute()
         # st.write(response)
@@ -372,7 +405,3 @@ class QuestionnaireDatabase:
         else:
             st.write(f"No data found in the {self.table_name} table.")
         return _data
-
-# Usage example:
-# db = QuestionnaireDatabase(conn)
-# db.insert_or_update_data(username, response_data)
