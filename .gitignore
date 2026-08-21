@@ -1,6 +1,9 @@
 .streamlit/secrets.toml
-.venv/*
-philoui.egg-info/**
-philoui/__pycache__/**
+.venv/
+*.egg-info/
+__pycache__/
+*.py[cod]
+build/
+dist/
 **/.DS_Store
 philoui/philoui_selectors/frontend/node_modules/**

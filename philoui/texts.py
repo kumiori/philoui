@@ -1,6 +1,5 @@
 import streamlit as st
 import time
-from streamlit_extras.streaming_write import write as streamwrite
 import random
 import string
 import hashlib
@@ -129,7 +128,7 @@ def create_streamed_columns(panel):
 
         col_idx = 0 if i % 2 == 0 else 1
         with cols[col_idx]:
-            streamwrite(_stream_once(panel[i], 0))
+            st.write_stream(_stream_once(panel[i], 0))
 
 
 def match_input(input_text, translation_dict):

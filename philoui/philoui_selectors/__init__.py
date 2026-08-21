@@ -1,20 +1,19 @@
+"""Low-level access to the bundled philoui selector component."""
+
+import os
+from pathlib import Path
+
 import streamlit.components.v1 as components
-import streamlit as st
 
-st.text("Hello")
 
-_my_component = components.declare_component(
-    "qualitative",
-    url='http://localhost:3001'
+_development_url = os.getenv("PHILOUI_COMPONENT_URL")
+_component_options = (
+    {"url": _development_url}
+    if _development_url
+    else {"path": str(Path(__file__).parent / "frontend" / "build")}
 )
+_my_component = components.declare_component("qualitative", **_component_options)
 
 
 def my_component(name, greeting="Hello", key=None):
     return _my_component(name=name, greeting=greeting, default=0, key=key)
-
-return_value = my_component(name = "Spirit", key = "Ahoi")
-st.write('You picked me:', return_value)
-
-# return_value = my_component(name = "Mai-Brit", greeting='Ahoi', key="foo")
-# st.write('You tricked me', return_value)
-# _my_component(key="bar")

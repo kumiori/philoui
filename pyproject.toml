@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "philoui"
+version = "0.1.0"
+description = "Philosophically informed interactive interfaces for Streamlit."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Andrés A León Baldelli", email = "leon.baldelli@cnrs.fr" }]
+dependencies = [
+  "emoji>=2",
+  "numpy>=1.24",
+  "opencage>=2.4",
+  "pandas>=2",
+  "plotly>=5",
+  "st-supabase-connection>=1.2",
+  "streamlit>=1.36",
+  "streamlit-authenticator>=0.3.3",
+  "streamlit-extras>=0.3.5",
+  "streamlit-survey>=0.1,<1",
+  "streamlit-toggle-switch>=1.0.2",
+  "streamlit-vertical-slider>=2.5",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+]
+
+[project.optional-dependencies]
+audio = ["librosa>=0.10", "matplotlib>=3.8", "PyAudio>=0.2.14"]
+
+[project.urls]
+Homepage = "https://github.com/kumiori/philoui"
+Repository = "https://github.com/kumiori/philoui"
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.packages.find]
+include = ["philoui*"]
+exclude = ["philoui.philoui_selectors.frontend*"]
+
+[tool.setuptools.package-data]
+"philoui.philoui_selectors" = [
+  "frontend/build/*.css",
+  "frontend/build/*.html",
+  "frontend/build/*.json",
+  "frontend/build/static/js/*.js",
+  "frontend/build/static/js/*.js.LICENSE.txt",
+  "frontend/build/static/js/*.js.map",
+]

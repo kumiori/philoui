@@ -6,19 +6,18 @@ import os
 from streamlit_extras.mandatory_date_range import date_range_picker 
 import datetime
 
-if st.secrets["runtime"]["STATUS"] == "Production":
-    st.write(os.path.basename(__file__))
-    root_dir = os.path.dirname(__file__)
-
-    # Print the root directory
-    st.write("Root directory:", root_dir)
-    build_dir = os.path.join(os.path.split(root_dir)[0], "philoui/philoui_selectors/frontend/build")
-    st.write("Build directory:", build_dir)
-    _qualitative_selector = components.declare_component("qualitative", path=build_dir)
-else:
+component_url = os.getenv("PHILOUI_COMPONENT_URL")
+if component_url:
     _qualitative_selector = components.declare_component(
         "philoui_selectors",
-        url='http://localhost:3001'
+        url=component_url,
+    )
+else:
+    build_dir = os.path.join(
+        os.path.dirname(__file__), "philoui_selectors", "frontend", "build"
+    )
+    _qualitative_selector = components.declare_component(
+        "qualitative", path=build_dir
     )
 
 def _dichotomy(name, question, label, rotationAngle = 0, gradientWidth = 40, height = 100, invert = False, shift = 0, key=None):
@@ -101,14 +100,14 @@ class CustomStreamlitSurvey(ss.StreamlitSurvey):
         return VerticalSlider(self, label, id, **kwargs).display()
 
     def qualitative_parametric(self, label: str = "", id: str = None, key=None, **kwargs):
-        return ParametricQualitative(self, label, id, **kwargs).display()
+        return ParametricQualitative(self, label, id, key=key, **kwargs).display()
 
     def quantitative(self, label: str = "", id: str = None, key=None, **kwargs):
-        return ParametricQuantitative(self, label, id, **kwargs).display()
+        return ParametricQuantitative(self, label, id, key=key, **kwargs).display()
 
     def button(self, label: str = "", id: str = None, **kwargs) -> str:
         return Button(self, label, id, **kwargs).display()
-    
+
     def mandatory_date_range(self, name: str = "", id: str = None, **kwargs) -> str:
         return MandatoryDateRange(self, name=name, id=id, **kwargs).display()
 
@@ -127,5 +126,3 @@ def create_flag_ui(pages, survey):
         survey.data["flagged_questions"][f"Question {pages.current + 1}"] = {
                         "reason": flag_reason
                     }
-
-    

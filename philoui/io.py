@@ -10,11 +10,19 @@ from philoui.texts import friendly_time
 conn = st.connection("supabase", type=SupabaseConnection)
 
 
-def create_button(key, kwargs={}):
-    return st.button(label=key)
+def create_button(key, kwargs=None):
+    kwargs = kwargs or {}
+    return st.button(
+        label=kwargs.get("label", key),
+        key=key,
+        help=kwargs.get("help"),
+        disabled=kwargs.get("disabled", False),
+        use_container_width=kwargs.get("use_container_width", False),
+    )
 
 
-def create_dichotomy(key, id=None, kwargs={}):
+def create_dichotomy(key, id=None, kwargs=None):
+    kwargs = kwargs or {}
     st.divider()
     survey = kwargs.get("survey")
     label = kwargs.get("label", "Confidence")
@@ -29,6 +37,10 @@ def create_dichotomy(key, id=None, kwargs={}):
         label=label,
         question=question,
         gradientWidth=kwargs.get("gradientWidth", 30),
+        rotationAngle=kwargs.get("rotationAngle", 0),
+        height=kwargs.get("height", 100),
+        invert=kwargs.get("invert", False),
+        shift=kwargs.get("shift", 0),
         key=key,
     )
     if response:
@@ -46,7 +58,8 @@ def create_dichotomy(key, id=None, kwargs={}):
     return response
 
 
-def create_dichotomy_with3cols(key, id=None, kwargs={}):
+def create_dichotomy_with3cols(key, id=None, kwargs=None):
+    kwargs = kwargs or {}
     survey = kwargs.get("survey")
     label = kwargs.get("label", "Confidence")
     name = kwargs.get("name", "there")
@@ -61,6 +74,10 @@ def create_dichotomy_with3cols(key, id=None, kwargs={}):
             label=label,
             question=question,
             gradientWidth=kwargs.get("gradientWidth", 30),
+            rotationAngle=kwargs.get("rotationAngle", 0),
+            height=kwargs.get("height", 100),
+            invert=kwargs.get("invert", False),
+            shift=kwargs.get("shift", 0),
             key=key,
         )
     with col3:
@@ -82,22 +99,22 @@ def create_dichotomy_with3cols(key, id=None, kwargs={}):
     return response
 
 
-def create_qualitative(key, id=None, kwargs={}):
+def create_qualitative(key, id=None, kwargs=None):
+    kwargs = kwargs or {}
     survey = kwargs.get("survey")
-    st.write(kwargs)
     _response = survey.qualitative_parametric(
         name=kwargs.get("name", "Spirit"),
         question=kwargs.get("question", "Support, Invest, or Invest?"),
         label=kwargs.get("label", "Qualitative"),
-        areas=3,
+        areas=kwargs.get("areas", 3),
         data_values=kwargs.get("data_values", [1, 2, 10]),
-        key=kwargs.get("key", "qualitative"),
+        key=kwargs.get("key", key),
     )
-    st.write(_response)
     return _response
 
 
-def create_quantitative(key, id=None, kwargs={}):
+def create_quantitative(key, id=None, kwargs=None):
+    kwargs = kwargs or {}
     survey = kwargs.get("survey")
     # print(kwargs.get('key', "quantitative"))
     _response = survey.quantitative(
@@ -105,32 +122,32 @@ def create_quantitative(key, id=None, kwargs={}):
         question=kwargs.get("question", "How tricky is Quantity?"),
         label=kwargs.get("label", "Quantitative"),
         data_values=kwargs.get("data_values", [1, 10, 100, 0.1]),
-        key=kwargs.get("key", "quantitative"),
+        key=kwargs.get("key", key),
     )
-    st.write(_response)
     return _response
 
 
-def create_yesno(key, kwargs={}):
-    survey = kwargs
+def create_yesno(key, kwargs=None):
+    kwargs = kwargs or {}
     callback_yes, callback_no = kwargs.get("callback", (lambda: None, lambda: None))
+    label_yes, label_no = kwargs.get("labels", ("Yes", "No"))
     col1, col2 = st.columns(2)
     with col1:
-        yes_clicked = st.button("Yes", key=f"{key}_yes", on_click=callback_yes)
+        yes_clicked = st.button(label_yes, key=f"{key}_yes", on_click=callback_yes)
     with col2:
-        no_clicked = st.button("No", key=f"{key}_no", on_click=callback_no)
+        no_clicked = st.button(label_no, key=f"{key}_no", on_click=callback_no)
 
-    return
+    return True if yes_clicked else False if no_clicked else None
 
 
-def create_yesno_row(key, kwargs={}):
-    survey = kwargs.get("survey")
+def create_yesno_row(key, kwargs=None):
+    kwargs = kwargs or {}
     callback_yes, callback_no = kwargs.get("callback", (lambda: None, lambda: None))
-    label_no, label_yes = kwargs.get("labels", ("Yes", "No"))
+    label_yes, label_no = kwargs.get("labels", ("Yes", "No"))
 
     links_row = row(2, vertical_align="center")
-    links_row.button(
-        label_yes,
+    no_clicked = links_row.button(
+        label_no,
         use_container_width=True,
         on_click=callback_no,
         key=f"{key}_no",
@@ -138,17 +155,23 @@ def create_yesno_row(key, kwargs={}):
 
     # ""
     # ""
-    links_row.button(
-        label_no,
+    yes_clicked = links_row.button(
+        label_yes,
         use_container_width=True,
         on_click=callback_yes,
         key=f"{key}_yes",
     )
+    return True if yes_clicked else False if no_clicked else None
 
 
-def create_next(key, kwargs={}):
-    survey = kwargs
-    return st.button("Next", key=f"{key}")
+def create_next(key, kwargs=None):
+    kwargs = kwargs or {}
+    return st.button(
+        kwargs.get("label", "Next"),
+        key=key,
+        disabled=kwargs.get("disabled", False),
+        use_container_width=kwargs.get("use_container_width", False),
+    )
 
 
 def create_globe(key, kwargs={"database": "gathering", "table": "gathering"}):
@@ -238,11 +261,15 @@ def create_globe(key, kwargs={"database": "gathering", "table": "gathering"}):
     return
 
 
-def create_textinput(key, kwargs={}):
+def create_textinput(key, kwargs=None):
+    kwargs = kwargs or {}
     survey = kwargs.get("survey")
-    text = survey.text_input(key, help="Help us best route your current location")
-
-    location = st.session_state.coordinates
+    text = survey.text_input(
+        kwargs.get("label", key),
+        key=key,
+        help=kwargs.get("help", "Help us best route your current location"),
+    )
+    return text
 
     # if location:
     #     with st.spinner():
@@ -270,29 +297,33 @@ def create_textinput(key, kwargs={}):
     #     st.markdown(f"## Forward, confirming that you connect from `{geographical_region}`")
 
 
-def create_checkbox(key, kwargs={"label": "Choose"}):
+def create_checkbox(key, kwargs=None):
+    kwargs = kwargs or {}
     survey = kwargs.get("survey")
-    return survey.checkbox(kwargs.get("label", ""), key=key)
+    return survey.checkbox(kwargs.get("label", "Choose"), key=key)
 
 
-def create_equaliser(key, id=None, kwargs={}):
+def create_equaliser(key, id=None, kwargs=None):
+    kwargs = kwargs or {}
     survey = kwargs.get("survey")
     rows = 1
-    dimensions = kwargs["data"]
+    dimensions = kwargs.get("data", [])
+    if not dimensions:
+        return []
     split_len = len(dimensions) // rows
     bottom_cols = st.columns(split_len)
+    values = []
 
     # for j in range(rows):
     j = 0
     with st.container():
         for i, column in enumerate(bottom_cols):
             with column:
-                print(i + j * split_len)
-                survey.equaliser(
+                value = survey.equaliser(
                     label=dimensions[i + j * split_len][0],
                     id=id + f"_{i + j*split_len}",
                     height=200,
-                    key=f"cat_{i}_{j}",
+                    key=f"{key}_{i}_{j}",
                     default_value=0,
                     step=1,
                     min_value=0,
@@ -301,6 +332,8 @@ def create_equaliser(key, id=None, kwargs={}):
                     max_value=100,
                     value_always_visible=True,
                 )
+                values.append(value)
+    return values
 
 
 def fetch_and_display_data(conn, kwargs):
