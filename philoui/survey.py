@@ -4,7 +4,6 @@ from streamlit_vertical_slider import vertical_slider
 import streamlit_survey as ss
 import os 
 from streamlit_extras.mandatory_date_range import date_range_picker 
-import datetime
 
 component_url = os.getenv("PHILOUI_COMPONENT_URL")
 if component_url:
@@ -20,10 +19,10 @@ else:
         "qualitative", path=build_dir
     )
 
-def _dichotomy(name, question, label, rotationAngle = 0, gradientWidth = 40, height = 100, invert = False, shift = 0, key=None):
+def _dichotomy(widget_label, question, name="", rotationAngle = 0, gradientWidth = 40, height = 100, invert = False, shift = 0, key=None):
     return _qualitative_selector(component = "dichotomy",
     name = name,
-    label = label,
+    label = widget_label,
     key=key,
     height=height,
     question = question,
@@ -33,25 +32,29 @@ def _dichotomy(name, question, label, rotationAngle = 0, gradientWidth = 40, hei
     shift = shift
     )
     
-def _qualitative(name, question, label, areas, data_values = [1, 2, 10], key=None):
+def _qualitative(widget_label, question, areas, name="", data_values=None, height=120, key=None):
+    if data_values is None:
+        data_values = [1, 2, 10]
     return _qualitative_selector(component = "parametric",
     name = name,
-    label = label,
+    label = widget_label,
     key=key,
     areas = areas,
     data_values = data_values,
-    question = question)
+    question = question,
+    height = height)
 
-def parametric_quantitative(name, question, label, data_values, key=None):
+def parametric_quantitative(widget_label, question, data_values, name="", height=120, key=None):
     return _qualitative_selector(component = "qualitative",
     name = name,
-    label = label,
+    label = widget_label,
     key=key,
     data_values  = data_values,
-    question = question)
+    question = question,
+    height = height)
 
-def _date_range_picker(name,
-                       label = "",
+def _date_range_picker(widget_label,
+                       name = None,
                         default_start = None, 
                         default_end = None,
                         min_date = None,
@@ -60,34 +63,21 @@ def _date_range_picker(name,
                         id=None, key=None):
         
     return date_range_picker(
-        name,
+        name or widget_label,
         default_start = default_start,
         default_end = default_end,
-        min_date = None,
-        max_date = None,
-        error_message = "",
+        min_date = min_date,
+        max_date = max_date,
+        error_message = error_message,
         key=key,
         )
-
-date_encoder = lambda obj: obj.isoformat()
-# date_decoder = lambda obj: datetime.datetime.fromisoformat(obj)
-def date_decoder(date_obj):
-    if isinstance(date_obj, datetime.date):
-        return {
-            "__type__": "datetime.date",
-            "year": date_obj.year,
-            "month": date_obj.month,
-            "day": date_obj.day
-        }
-    else:
-        raise TypeError("Input must be a datetime.date object")
 
 Dichotomy = ss.SurveyComponent.from_st_input(_dichotomy)
 VerticalSlider = ss.SurveyComponent.from_st_input(vertical_slider)
 ParametricQualitative = ss.SurveyComponent.from_st_input(_qualitative)
 ParametricQuantitative = ss.SurveyComponent.from_st_input(parametric_quantitative)
 Button = ss.SurveyComponent.from_st_input(st.button)
-MandatoryDateRange = ss.SurveyComponent.from_st_input(_date_range_picker, decoder=date_decoder)
+MandatoryDateRange = ss.SurveyComponent.from_st_input(_date_range_picker)
 # MandatoryDateRange = ss.SurveyComponent.from_st_input(_date_range_picker)
 
 class CustomStreamlitSurvey(ss.StreamlitSurvey):
@@ -109,7 +99,7 @@ class CustomStreamlitSurvey(ss.StreamlitSurvey):
         return Button(self, label, id, **kwargs).display()
 
     def mandatory_date_range(self, name: str = "", id: str = None, **kwargs) -> str:
-        return MandatoryDateRange(self, name=name, id=id, **kwargs).display()
+        return MandatoryDateRange(self, label=name, id=id, **kwargs).display()
 
 def create_flag_ui(pages, survey):
     # Checkbox to flag the question

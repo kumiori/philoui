@@ -25,6 +25,26 @@ python -m pip install -r requirements.txt
 Both commands use `pyproject.toml` as the dependency source of truth and allow
 pip to choose versions compatible with the active Python interpreter.
 
+## Protocol grammars
+
+`philoui` can read the declarative `tebka.protocol-grammar/v0.1` YAML format.
+The loader validates role, state, action, transition, visibility, aggregation,
+and termination references while preserving optional extensions for an engine
+to interpret later.
+
+```python
+from philoui import load_protocol_grammar
+
+document = load_protocol_grammar("protocols.yaml")
+proposal = document.grammar("proposal")
+actions = proposal.available_actions(proposal.initial_state, actor="proposer")
+next_state = proposal.transition("idle", "propose", actor="proposer")
+```
+
+The loader does not execute actions and does not select a UI. The engine owns
+execution semantics; Streamlit or another client may render the normalised
+model.
+
 Audio support is optional because it requires system audio libraries:
 
 ```bash

@@ -3,7 +3,7 @@
 *.egg-info/
 __pycache__/
 *.py[cod]
-build/
-dist/
+/build/
+/dist/
 **/.DS_Store
 philoui/philoui_selectors/frontend/node_modules/**

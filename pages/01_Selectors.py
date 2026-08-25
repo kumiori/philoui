@@ -1,16 +1,12 @@
-import os
-
 import streamlit as st
 
-
-os.environ.setdefault("PHILOUI_COMPONENT_URL", "http://localhost:3001")
 st.set_page_config(page_title="Selector laboratory", page_icon="🎛️", layout="wide")
 
 from philoui.survey import CustomStreamlitSurvey
 
 
 st.title("Selector laboratory")
-st.caption("React component round-trips through the development server on port 3001.")
+st.caption("Packaged selectors with responsive geometry and immediate value updates.")
 
 survey = CustomStreamlitSurvey(label="selector_lab")
 
@@ -20,9 +16,6 @@ with st.sidebar:
     height = st.slider("Component height", 80, 260, 150, 10)
     rotation = st.slider("Rotation angle", -15, 15, 0)
     invert = st.toggle("Invert colours")
-    st.divider()
-    st.caption("Component source")
-    st.code(os.environ["PHILOUI_COMPONENT_URL"], language=None)
 
 dichotomy_tab, qualitative_tab, quantitative_tab, matrix_tab = st.tabs(
     ["Dichotomy", "Qualitative", "Quantitative", "Variant matrix"]
@@ -65,7 +58,7 @@ with dichotomy_tab:
         st.write("Raw value", three_column_value)
 
 with qualitative_tab:
-    st.subheader("Nested qualitative regions")
+    st.subheader("Qualitative regions")
     qualitative_values = ["outside", "near", "inside", "core"]
     qualitative = survey.qualitative_parametric(
         name="Proximity",
@@ -79,7 +72,7 @@ with qualitative_tab:
     st.caption(f"Configured values: {qualitative_values}")
 
 with quantitative_tab:
-    st.subheader("Nested quantitative levels")
+    st.subheader("Quantitative levels")
     quantitative_values = [0, 1, 10, 100]
     quantitative = survey.quantitative(
         name="Commitment",

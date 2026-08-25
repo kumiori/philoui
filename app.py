@@ -15,12 +15,14 @@ st.markdown(
     """
 Use the pages in the sidebar to test one concern at a time:
 
-- **Selectors** exercises the React dichotomy, qualitative, and quantitative
-  components against the development server on port 3001.
+- **Selectors** exercises the packaged dichotomy, qualitative, and quantitative
+  components with responsive layouts and visible return values.
 - **Inputs** covers the Python wrapper widgets, callbacks, returned values, and
   survey state.
 - **Display utilities** covers deterministic non-network helpers such as
   pagination, dictionaries, matrices, and text transformations.
+- **Protocol grammar** validates and inspects declarative YAML without adding
+  protocol-specific UI or execution logic.
 
 Every example shows its current return value. The diagnostics at the bottom of
 each page make reruns and state transitions visible during manual QA.

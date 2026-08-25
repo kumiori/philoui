@@ -8,9 +8,7 @@ import { ComponentProps, withStreamlitConnection } from "streamlit-component-lib
 const QualiQuantiComponent = (props: ComponentProps) => {
   //get data
   const component = props.args['component']
-  const kw = props.args['kw']
-
-  //return component base on component id
+  // Return the requested selector while keeping one Streamlit connection.
   switch (component) {
     case 'dichotomy':
       return <Dichotomy {...props} />;
@@ -19,16 +17,13 @@ const QualiQuantiComponent = (props: ComponentProps) => {
       case 'parametric':
       return <QualitativeParametricSelector {...props} />;
     default:
-      return <h1>default</h1>
+      return <p>Unknown selector type.</p>
   }
 };
 
 const StreamlitQualiQuantiComponent = withStreamlitConnection(QualiQuantiComponent)
 
 ReactDOM.render(
-  <React.StrictMode>
-    <StreamlitQualiQuantiComponent />
-  </React.StrictMode>,
+  <StreamlitQualiQuantiComponent />,
   document.getElementById("root")
 )
-
